@@ -12118,285 +12118,285 @@ def MASTER_SALARY_IDFC(request):
                   {'excel': excel_data, 'excel1': excel_data1, 'excel2': excel_data2, 'columns2': C12, 'columns': C, 'columns1': C11, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
 
-def MASTER_SALARY_FULLERTON(request):
-    excel_data = []
-    excel_data1 = []
-    excel_data2 = []
-    FINAL_PAYOUT = pd.DataFrame()
-    COMBINED_SALARY = pd.DataFrame()
-    LTTW = pd.DataFrame()
-    AA1 = pd.DataFrame()
-
-    if request.method == 'POST':
-        if os.path.exists(
-                os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/MASTER_FILE_FULLERTON_RECOVERY.xlsx')):
-            fs = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
-            fs1 = FileSystemStorage(location='media/FULLERTON_RECOVERY/Billing')
-            fs2 = FileSystemStorage(location='media/Employees')
-            fs3 = FileSystemStorage(location='media/FULLERTON_RECOVERY/MIS')
-
-            A123 = fs.open('MASTER_FILE_FULLERTON_RECOVERY.xlsx')
-            A1 = fs1.open('PAYOUT_FULLERTON_RECOVERY.xlsx')
-            A = pd.read_excel(A123)
-            C = pd.read_excel(A1)
-            UNIQUE_NAME1 = fs2.open('Employee_Database.xlsx')
-            UNIQUE_NAME = pd.read_excel(UNIQUE_NAME1)
-
-            for i in range(31, 0, -1):
-                if os.path.exists(os.path.join(BASE_DIR,
-                                               'media/FULLERTON_RECOVERY/MIS/FULLERTON_RECOVERY_PAID FILE_' + str(
-                                                       i) + 'AUG21.xlsx')):
-                    A1234 = fs3.open('FULLERTON_RECOVERY_PAID FILE_' + str(i) + 'AUG21.xlsx')
-                    B = pd.read_excel(A1234)
-
-            COLLECTION = C['MONEY_COLLECTION'].sum()
-
-            COLLECTION
-
-            U = UNIQUE_NAME.copy()
-
-            dr = list(B[B['MODE'] == 'ECS'].index)
-
-            B.drop(dr, axis=0, inplace=True)
-
-            B = B.reset_index(drop=True)
-
-            B.shape
-
-            B.head()
-
-            B.groupby(['AGREEMENTID', 'FOS'])['FOS'].count()
-
-            B1 = pd.DataFrame(B.groupby(['AGREEMENTID', 'FOS'])['MODE'].count()).reset_index()
-
-            B1.shape
-
-            B1
-
-            B1.drop('MODE', axis=1, inplace=True)
-
-            B1.rename({'FOS': 'FINAL PAID FOS'}, axis=1, inplace=True)
-
-            B1.head(1)
-
-            A.head(1)
-
-            A = A.merge(B1, how='outer')
-
-            A.head()
-
-            A[A['STATUS'] == 'FLOW']['FINAL PAID FOS'].unique()
-
-            A['FINAL PAID FOS'].fillna('--', inplace=True)
-
-            A['FINAL PAID FOS'].unique()
-
-            UN = list(U[U['DESIGNATION'] == 'OFFICE']['NAMES'])
-
-            for i in range(0, len(A['AGREEMENTID'])):
-                if (A.loc[i, 'FOS'] in UN) and (A.loc[i, 'FINAL PAID FOS'] in UN):
-                    A.loc[i, 'FOS'] = 'NITIN JAIN'
-                    A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
-                elif A.loc[i, 'FINAL PAID FOS'] in UN:
-                    A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
-                elif A.loc[i, 'FOS'] in UN:
-                    A.loc[i, 'FOS'] = 'NITIN JAIN'
-
-            for i in range(0, len(A['AGREEMENTID'])):
-                if A.loc[i, 'FINAL PAID FOS'] == 'NO FOS':
-                    A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
-
-            A.head()
-
-            A['FINAL PAID FOS'].unique()
-
-            A['FOS'].unique()
-
-            A.head()
-
-            M = pd.DataFrame(A.groupby(['FOS'])['POS'].sum()).reset_index()
-
-            M.rename({'POS': 'TOTAL_POS'}, axis=1, inplace=True)
-
-            R = pd.DataFrame(A.groupby(['FOS'])['AGREEMENTID'].count()).reset_index()
-
-            F = M.merge(R, how='outer')
-
-            F.rename({'AGREEMENTID': 'TOTAL_CASES'}, axis=1, inplace=True)
-
-            R1 = pd.DataFrame(A.groupby(['FOS', 'STATUS'])['AGREEMENTID'].count()).reset_index()
-
-            P = F.copy()
-
-            P.drop(['TOTAL_POS', 'TOTAL_CASES'], axis=1, inplace=True)
-
-            P['FLOW'] = np.nan
-            P['PAID'] = np.nan
-
-            COL = P.columns
-
-            R1.head()
-
-            for i in range(0, len(R1['FOS'])):
-                for j in range(0, len(P['FLOW'])):
-                    for k in range(0, len(COL)):
-                        if (R1.loc[i, 'FOS'] == P.loc[j, 'FOS']) and R1.loc[i, 'STATUS'] == COL[k]:
-                            P.loc[j, COL[k]] = R1.loc[i, 'AGREEMENTID']
-
-            P.head()
-
-            F = F.merge(P, how='outer')
-
-            F.head()
-
-            F.fillna(0, inplace=True)
-
-            F.rename({'FLOW': 'FLOW_CASES', 'PAID': 'PAID_CASES'}, axis=1, inplace=True)
-
-            F.head()
-
-            R2 = pd.DataFrame(A.groupby(['FINAL PAID FOS', 'STATUS'])['TOTAL PAID'].sum()).reset_index()
-
-            R2
-
-            dr = []
-            for i in range(0, len(R2['FINAL PAID FOS'])):
-                if (R2.loc[i, 'FINAL PAID FOS'] == '--') or (R2.loc[i, 'FINAL PAID FOS'] == 'NO FOS'):
-                    dr.append(i)
-
-            R2.drop(dr, axis=0, inplace=True)
-
-            R2 = R2.reset_index(drop=True)
-
-            R2.rename({'FINAL PAID FOS': 'FOS'}, axis=1, inplace=True)
-
-            R2
-
-            P.head()
-
-            COL
-
-            for i in range(0, len(P['FOS'])):
-                for j in range(0, len(R2['FOS'])):
-                    for k in range(0, len(COL)):
-                        if (R2.loc[j, 'FOS'] == P.loc[i, 'FOS']) and (R2.loc[j, 'STATUS'] == COL[k]):
-                            P.loc[i, 'TOTAL_PAID'] = R2.loc[j, 'TOTAL PAID']
-
-            P
-
-            F = F.merge(P, how='outer')
-
-            F.rename({'FLOW': 'FLOW_POS', 'TOTAL_PAID': 'PAID_POS'}, axis=1, inplace=True)
-
-            F.fillna(0, inplace=True)
-
-            F.drop('FLOW_POS', axis=1, inplace=True)
-
-            F.head()
-
-            F.rename({'PAID_POS': 'MONEY_COLLECTION'}, axis=1, inplace=True)
-
-            F.head()
-
-            F
-
-            F['FIXED_PAYOUT'] = F['TOTAL_CASES'] * 100
-
-            F.head()
-
-            for i in range(0, len(F['FOS'])):
-                if F.loc[i, 'MONEY_COLLECTION'] < 500000:
-                    F.loc[i, 'INCENTIVE%'] = '6%'
-                    F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 6 / 100
-                elif F.loc[i, 'MONEY_COLLECTION'] >= 500000:
-                    F.loc[i, 'INCENTIVE%'] = '7%'
-                    F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 7 / 100
-
-            for i in range(0, len(F['FOS'])):
-                if F.loc[i, 'FOS'] == 'NITIN JAIN':
-                    if COLLECTION >= 1000000:
-                        F.loc[i, 'INCENTIVE%'] = '2%'
-                        F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 2 / 100
-                        F.loc[i, 'FIXED_PAYOUT'] = 0
-                    else:
-                        F.loc[i, 'INCENTIVE%'] = '0%'
-                        F.loc[i, 'INCENTIVE'] = 0
-                        F.loc[i, 'FIXED_PAYOUT'] = 0
-
-            F
-
-            F['TOTAL_SALARY'] = F['FIXED_PAYOUT'] + F['INCENTIVE']
-
-            F.head()
-
-            F
-
-            dr = list(F[F['FOS'] == 'NO FOS'].index)
-
-            dr
-
-            F.drop(dr, axis=0, inplace=True)
-
-            F
-
-            F.reset_index(drop=True)
-
-            F = F.merge(UNIQUE_NAME, left_on='FOS', right_on='NAMES', how='left')
-
-            F.columns
-
-            F.drop(['DEPARTMENT_ID', 'END_DATE', 'HIRE_DATE', 'PHONE_NUMBER', 'LOCATION_ID', 'TYPE_OF_SALARY', 'SALARY',
-                    'MANAGEMENT_LEVEL', 'NAMES', 'STAFF', 'DATE_OF_BIRTH'], axis=1, inplace=True)
-
-            F
-
-            F['TOTAL_POS'] = round(F['TOTAL_POS'], 2)
-
-            F.to_excel(r'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx', index=False)
-
-            FINAL_PAYOUT = F.copy()
-
-        else:
-            final_dep = DEP()
-            final_process = COMPANY_PROCESS()
-            Designation = Employee_Designation()
-
-            return render(request, 'FirstLevel/salary.html',
-                          {'Salary_Update': 'Please upload Allocation file for FULLERTON_RECOVERY',
-                           'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
-
-    elif request.method != 'POST':
-        if os.path.exists(
-                os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/MASTER_FILE_FULLERTON_RECOVERY.xlsx')):
-            if os.path.exists(
-                    os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx')):
-                fs = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
-                AA12 = fs.open('FOS_SALARY_FULLERTON_RECOVERY.xlsx')
-                FINAL_PAYOUT = pd.read_excel(AA12)
-            else:
-                final_dep = DEP()
-                final_process = COMPANY_PROCESS()
-                Designation = Employee_Designation()
-
-                return render(request, 'FirstLevel/salary.html',
-                              {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
-        else:
-            return HttpResponseRedirect(reverse('basic_app:FULLERTON_RECOVERY_MIS'))
-
-    C = list(FINAL_PAYOUT.columns)
-
-    for j in range(0, len(FINAL_PAYOUT[C[0]])):
-        row_data = list()
-        for col in range(0, len(C)):
-            row_data.append(str(FINAL_PAYOUT.loc[j, C[col]]))
-        excel_data.append(row_data)
-
-    final_dep = DEP()
-    final_process = COMPANY_PROCESS()
-    Designation = Employee_Designation()
-
-    return render(request, 'FirstLevel/salary.html',
-                  {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+# def MASTER_SALARY_FULLERTON(request):
+#     excel_data = []
+#     excel_data1 = []
+#     excel_data2 = []
+#     FINAL_PAYOUT = pd.DataFrame()
+#     COMBINED_SALARY = pd.DataFrame()
+#     LTTW = pd.DataFrame()
+#     AA1 = pd.DataFrame()
+#
+#     if request.method == 'POST':
+#         if os.path.exists(
+#                 os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/MASTER_FILE_FULLERTON_RECOVERY.xlsx')):
+#             fs = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
+#             fs1 = FileSystemStorage(location='media/FULLERTON_RECOVERY/Billing')
+#             fs2 = FileSystemStorage(location='media/Employees')
+#             fs3 = FileSystemStorage(location='media/FULLERTON_RECOVERY/MIS')
+#
+#             A123 = fs.open('MASTER_FILE_FULLERTON_RECOVERY.xlsx')
+#             A1 = fs1.open('PAYOUT_FULLERTON_RECOVERY.xlsx')
+#             A = pd.read_excel(A123)
+#             C = pd.read_excel(A1)
+#             UNIQUE_NAME1 = fs2.open('Employee_Database.xlsx')
+#             UNIQUE_NAME = pd.read_excel(UNIQUE_NAME1)
+#
+#             for i in range(31, 0, -1):
+#                 if os.path.exists(os.path.join(BASE_DIR,
+#                                                'media/FULLERTON_RECOVERY/MIS/FULLERTON_RECOVERY_PAID FILE_' + str(
+#                                                        i) + 'AUG21.xlsx')):
+#                     A1234 = fs3.open('FULLERTON_RECOVERY_PAID FILE_' + str(i) + 'AUG21.xlsx')
+#                     B = pd.read_excel(A1234)
+#
+#             COLLECTION = C['MONEY_COLLECTION'].sum()
+#
+#             COLLECTION
+#
+#             U = UNIQUE_NAME.copy()
+#
+#             dr = list(B[B['MODE'] == 'ECS'].index)
+#
+#             B.drop(dr, axis=0, inplace=True)
+#
+#             B = B.reset_index(drop=True)
+#
+#             B.shape
+#
+#             B.head()
+#
+#             B.groupby(['AGREEMENTID', 'FOS'])['FOS'].count()
+#
+#             B1 = pd.DataFrame(B.groupby(['AGREEMENTID', 'FOS'])['MODE'].count()).reset_index()
+#
+#             B1.shape
+#
+#             B1
+#
+#             B1.drop('MODE', axis=1, inplace=True)
+#
+#             B1.rename({'FOS': 'FINAL PAID FOS'}, axis=1, inplace=True)
+#
+#             B1.head(1)
+#
+#             A.head(1)
+#
+#             A = A.merge(B1, how='outer')
+#
+#             A.head()
+#
+#             A[A['STATUS'] == 'FLOW']['FINAL PAID FOS'].unique()
+#
+#             A['FINAL PAID FOS'].fillna('--', inplace=True)
+#
+#             A['FINAL PAID FOS'].unique()
+#
+#             UN = list(U[U['DESIGNATION'] == 'OFFICE']['NAMES'])
+#
+#             for i in range(0, len(A['AGREEMENTID'])):
+#                 if (A.loc[i, 'FOS'] in UN) and (A.loc[i, 'FINAL PAID FOS'] in UN):
+#                     A.loc[i, 'FOS'] = 'NITIN JAIN'
+#                     A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
+#                 elif A.loc[i, 'FINAL PAID FOS'] in UN:
+#                     A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
+#                 elif A.loc[i, 'FOS'] in UN:
+#                     A.loc[i, 'FOS'] = 'NITIN JAIN'
+#
+#             for i in range(0, len(A['AGREEMENTID'])):
+#                 if A.loc[i, 'FINAL PAID FOS'] == 'NO FOS':
+#                     A.loc[i, 'FINAL PAID FOS'] = 'NITIN JAIN'
+#
+#             A.head()
+#
+#             A['FINAL PAID FOS'].unique()
+#
+#             A['FOS'].unique()
+#
+#             A.head()
+#
+#             M = pd.DataFrame(A.groupby(['FOS'])['POS'].sum()).reset_index()
+#
+#             M.rename({'POS': 'TOTAL_POS'}, axis=1, inplace=True)
+#
+#             R = pd.DataFrame(A.groupby(['FOS'])['AGREEMENTID'].count()).reset_index()
+#
+#             F = M.merge(R, how='outer')
+#
+#             F.rename({'AGREEMENTID': 'TOTAL_CASES'}, axis=1, inplace=True)
+#
+#             R1 = pd.DataFrame(A.groupby(['FOS', 'STATUS'])['AGREEMENTID'].count()).reset_index()
+#
+#             P = F.copy()
+#
+#             P.drop(['TOTAL_POS', 'TOTAL_CASES'], axis=1, inplace=True)
+#
+#             P['FLOW'] = np.nan
+#             P['PAID'] = np.nan
+#
+#             COL = P.columns
+#
+#             R1.head()
+#
+#             for i in range(0, len(R1['FOS'])):
+#                 for j in range(0, len(P['FLOW'])):
+#                     for k in range(0, len(COL)):
+#                         if (R1.loc[i, 'FOS'] == P.loc[j, 'FOS']) and R1.loc[i, 'STATUS'] == COL[k]:
+#                             P.loc[j, COL[k]] = R1.loc[i, 'AGREEMENTID']
+#
+#             P.head()
+#
+#             F = F.merge(P, how='outer')
+#
+#             F.head()
+#
+#             F.fillna(0, inplace=True)
+#
+#             F.rename({'FLOW': 'FLOW_CASES', 'PAID': 'PAID_CASES'}, axis=1, inplace=True)
+#
+#             F.head()
+#
+#             R2 = pd.DataFrame(A.groupby(['FINAL PAID FOS', 'STATUS'])['TOTAL PAID'].sum()).reset_index()
+#
+#             R2
+#
+#             dr = []
+#             for i in range(0, len(R2['FINAL PAID FOS'])):
+#                 if (R2.loc[i, 'FINAL PAID FOS'] == '--') or (R2.loc[i, 'FINAL PAID FOS'] == 'NO FOS'):
+#                     dr.append(i)
+#
+#             R2.drop(dr, axis=0, inplace=True)
+#
+#             R2 = R2.reset_index(drop=True)
+#
+#             R2.rename({'FINAL PAID FOS': 'FOS'}, axis=1, inplace=True)
+#
+#             R2
+#
+#             P.head()
+#
+#             COL
+#
+#             for i in range(0, len(P['FOS'])):
+#                 for j in range(0, len(R2['FOS'])):
+#                     for k in range(0, len(COL)):
+#                         if (R2.loc[j, 'FOS'] == P.loc[i, 'FOS']) and (R2.loc[j, 'STATUS'] == COL[k]):
+#                             P.loc[i, 'TOTAL_PAID'] = R2.loc[j, 'TOTAL PAID']
+#
+#             P
+#
+#             F = F.merge(P, how='outer')
+#
+#             F.rename({'FLOW': 'FLOW_POS', 'TOTAL_PAID': 'PAID_POS'}, axis=1, inplace=True)
+#
+#             F.fillna(0, inplace=True)
+#
+#             F.drop('FLOW_POS', axis=1, inplace=True)
+#
+#             F.head()
+#
+#             F.rename({'PAID_POS': 'MONEY_COLLECTION'}, axis=1, inplace=True)
+#
+#             F.head()
+#
+#             F
+#
+#             F['FIXED_PAYOUT'] = F['TOTAL_CASES'] * 100
+#
+#             F.head()
+#
+#             for i in range(0, len(F['FOS'])):
+#                 if F.loc[i, 'MONEY_COLLECTION'] < 500000:
+#                     F.loc[i, 'INCENTIVE%'] = '6%'
+#                     F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 6 / 100
+#                 elif F.loc[i, 'MONEY_COLLECTION'] >= 500000:
+#                     F.loc[i, 'INCENTIVE%'] = '7%'
+#                     F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 7 / 100
+#
+#             for i in range(0, len(F['FOS'])):
+#                 if F.loc[i, 'FOS'] == 'NITIN JAIN':
+#                     if COLLECTION >= 1000000:
+#                         F.loc[i, 'INCENTIVE%'] = '2%'
+#                         F.loc[i, 'INCENTIVE'] = F.loc[i, 'MONEY_COLLECTION'] * 2 / 100
+#                         F.loc[i, 'FIXED_PAYOUT'] = 0
+#                     else:
+#                         F.loc[i, 'INCENTIVE%'] = '0%'
+#                         F.loc[i, 'INCENTIVE'] = 0
+#                         F.loc[i, 'FIXED_PAYOUT'] = 0
+#
+#             F
+#
+#             F['TOTAL_SALARY'] = F['FIXED_PAYOUT'] + F['INCENTIVE']
+#
+#             F.head()
+#
+#             F
+#
+#             dr = list(F[F['FOS'] == 'NO FOS'].index)
+#
+#             dr
+#
+#             F.drop(dr, axis=0, inplace=True)
+#
+#             F
+#
+#             F.reset_index(drop=True)
+#
+#             F = F.merge(UNIQUE_NAME, left_on='FOS', right_on='NAMES', how='left')
+#
+#             F.columns
+#
+#             F.drop(['DEPARTMENT_ID', 'END_DATE', 'HIRE_DATE', 'PHONE_NUMBER', 'LOCATION_ID', 'TYPE_OF_SALARY', 'SALARY',
+#                     'MANAGEMENT_LEVEL', 'NAMES', 'STAFF', 'DATE_OF_BIRTH'], axis=1, inplace=True)
+#
+#             F
+#
+#             F['TOTAL_POS'] = round(F['TOTAL_POS'], 2)
+#
+#             F.to_excel(r'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx', index=False)
+#
+#             FINAL_PAYOUT = F.copy()
+#
+#         else:
+#             final_dep = DEP()
+#             final_process = COMPANY_PROCESS()
+#             Designation = Employee_Designation()
+#
+#             return render(request, 'FirstLevel/salary.html',
+#                           {'Salary_Update': 'Please upload Allocation file for FULLERTON_RECOVERY',
+#                            'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+#
+#     elif request.method != 'POST':
+#         if os.path.exists(
+#                 os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/MASTER_FILE_FULLERTON_RECOVERY.xlsx')):
+#             if os.path.exists(
+#                     os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx')):
+#                 fs = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
+#                 AA12 = fs.open('FOS_SALARY_FULLERTON_RECOVERY.xlsx')
+#                 FINAL_PAYOUT = pd.read_excel(AA12)
+#             else:
+#                 final_dep = DEP()
+#                 final_process = COMPANY_PROCESS()
+#                 Designation = Employee_Designation()
+#
+#                 return render(request, 'FirstLevel/salary.html',
+#                               {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+#         else:
+#             return HttpResponseRedirect(reverse('basic_app:FULLERTON_RECOVERY_MIS'))
+#
+#     C = list(FINAL_PAYOUT.columns)
+#
+#     for j in range(0, len(FINAL_PAYOUT[C[0]])):
+#         row_data = list()
+#         for col in range(0, len(C)):
+#             row_data.append(str(FINAL_PAYOUT.loc[j, C[col]]))
+#         excel_data.append(row_data)
+#
+#     final_dep = DEP()
+#     final_process = COMPANY_PROCESS()
+#     Designation = Employee_Designation()
+#
+#     return render(request, 'FirstLevel/salary.html',
+#                   {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
 
 def BAJAJ_MIS(request):
@@ -15183,44 +15183,44 @@ def IDFC_TW_ANALYSIS(request):
                            'STATUS': 'Please Refresh TC and FOS Salary Data'})
 
 
-def FULLERTON_RECOVERY_ANALYSIS(request):
-    final_dep = DEP()
-    final_process = COMPANY_PROCESS()
-    Designation = Employee_Designation()
-
-    if request.method != 'POST':
-        if os.path.exists(os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx')):
-            if os.path.exists(os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/Billing/PAYOUT_FULLERTON_RECOVERY.xlsx')):
-                if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
-                    fs1 = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
-                    fs2 = FileSystemStorage(location='media/FULLERTON_RECOVERY/Billing')
-                    fs3 = FileSystemStorage(location='media/Employees')
-
-                    AA1 = fs1.open('FOS_SALARY_FULLERTON_RECOVERY.xlsx')
-                    AA2 = fs2.open('PAYOUT_FULLERTON_RECOVERY.xlsx')
-                    AA3 = fs3.open('Employee_Database.xlsx')
-
-                    AA1 = pd.read_excel(AA1)
-                    AA2 = pd.read_excel(AA2)
-                    AA3 = pd.read_excel(AA3)
-
-                    AA3 = AA3[(AA3['PROCESS'] == 'FULLERTON') & (AA3['DEPARTMENT'] == 'RECOVERY') & (AA3['EMPLOYEE_STATUS'] == 'ACTIVE')]
-
-                    FIXED_COSTING_FOS = AA1['FIXED_PAYOUT'].sum()
-                    INCENTIVE_COSTING_FOS = AA1['INCENTIVE'].sum()
-                    TOTAL_FOS_COSTING = FIXED_COSTING_FOS + INCENTIVE_COSTING_FOS
-                    FIXED_COSTING_OFFICE = AA3['SALARY'].sum()
-                    TOTAL_BILLING = AA2['PAYOUT'].sum()
-
-                    FINAL_COSTING = FIXED_COSTING_FOS + INCENTIVE_COSTING_FOS + FIXED_COSTING_OFFICE
-                    P_L_FULLERTON_RECOVERY = round(TOTAL_BILLING - FINAL_COSTING, 2)
-                    P_L_FULLERTON_RECOVERY_PERCENTAGE = round((P_L_FULLERTON_RECOVERY / TOTAL_BILLING) * 100, 2)
-
-                    return render(request, 'FirstLevel/analysis.html',{'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'FIXED_COSTING_FOS': FIXED_COSTING_FOS, 'INCENTIVE_COSTING_FOS': INCENTIVE_COSTING_FOS, 'TOTAL_BILLING': TOTAL_BILLING, 'FIXED_COSTING_OFFICE': FIXED_COSTING_OFFICE, 'FINAL_COSTING': FINAL_COSTING, 'P_L_FULLERTON_RECOVERY': P_L_FULLERTON_RECOVERY, 'TOTAL_FOS_COSTING': TOTAL_FOS_COSTING, 'P_L_FULLERTON_RECOVERY_PERCENTAGE': P_L_FULLERTON_RECOVERY_PERCENTAGE})
-            else:
-                return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh Billing Data'})
-        else:
-            return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh FOS Salary Data'})
+# def FULLERTON_RECOVERY_ANALYSIS(request):
+#     final_dep = DEP()
+#     final_process = COMPANY_PROCESS()
+#     Designation = Employee_Designation()
+#
+#     if request.method != 'POST':
+#         if os.path.exists(os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/FOS Salary/FOS_SALARY_FULLERTON_RECOVERY.xlsx')):
+#             if os.path.exists(os.path.join(BASE_DIR, 'media/FULLERTON_RECOVERY/Billing/PAYOUT_FULLERTON_RECOVERY.xlsx')):
+#                 if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
+#                     fs1 = FileSystemStorage(location='media/FULLERTON_RECOVERY/FOS Salary')
+#                     fs2 = FileSystemStorage(location='media/FULLERTON_RECOVERY/Billing')
+#                     fs3 = FileSystemStorage(location='media/Employees')
+#
+#                     AA1 = fs1.open('FOS_SALARY_FULLERTON_RECOVERY.xlsx')
+#                     AA2 = fs2.open('PAYOUT_FULLERTON_RECOVERY.xlsx')
+#                     AA3 = fs3.open('Employee_Database.xlsx')
+#
+#                     AA1 = pd.read_excel(AA1)
+#                     AA2 = pd.read_excel(AA2)
+#                     AA3 = pd.read_excel(AA3)
+#
+#                     AA3 = AA3[(AA3['PROCESS'] == 'FULLERTON') & (AA3['DEPARTMENT'] == 'RECOVERY') & (AA3['EMPLOYEE_STATUS'] == 'ACTIVE')]
+#
+#                     FIXED_COSTING_FOS = AA1['FIXED_PAYOUT'].sum()
+#                     INCENTIVE_COSTING_FOS = AA1['INCENTIVE'].sum()
+#                     TOTAL_FOS_COSTING = FIXED_COSTING_FOS + INCENTIVE_COSTING_FOS
+#                     FIXED_COSTING_OFFICE = AA3['SALARY'].sum()
+#                     TOTAL_BILLING = AA2['PAYOUT'].sum()
+#
+#                     FINAL_COSTING = FIXED_COSTING_FOS + INCENTIVE_COSTING_FOS + FIXED_COSTING_OFFICE
+#                     P_L_FULLERTON_RECOVERY = round(TOTAL_BILLING - FINAL_COSTING, 2)
+#                     P_L_FULLERTON_RECOVERY_PERCENTAGE = round((P_L_FULLERTON_RECOVERY / TOTAL_BILLING) * 100, 2)
+#
+#                     return render(request, 'FirstLevel/analysis.html',{'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'FIXED_COSTING_FOS': FIXED_COSTING_FOS, 'INCENTIVE_COSTING_FOS': INCENTIVE_COSTING_FOS, 'TOTAL_BILLING': TOTAL_BILLING, 'FIXED_COSTING_OFFICE': FIXED_COSTING_OFFICE, 'FINAL_COSTING': FINAL_COSTING, 'P_L_FULLERTON_RECOVERY': P_L_FULLERTON_RECOVERY, 'TOTAL_FOS_COSTING': TOTAL_FOS_COSTING, 'P_L_FULLERTON_RECOVERY_PERCENTAGE': P_L_FULLERTON_RECOVERY_PERCENTAGE})
+#             else:
+#                 return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh Billing Data'})
+#         else:
+#             return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh FOS Salary Data'})
 
 
 def BAJAJ_CD_ANALYSIS(request):
@@ -15367,7 +15367,7 @@ def BAJAJ_CD_ANALYSIS(request):
             elif os.path.exists(os.path.join(BASE_DIR, 'media/BAJAJ-PL/Billing/FEB 22/BAJAJ-PL Billing MIS.xlsx')):
                 if os.path.exists(os.path.join(BASE_DIR, 'media/BAJAJ-PL/TC Incentive/FEB 22/BAJAJ-PL TC Incentive Group.xlsx')):
                     if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
-                        fs3 = FileSystemStorage(location='media/Employees/FEB 22')
+                        fs3 = FileSystemStorage(location='media/Employees')
                         fs4 = FileSystemStorage(location='media/BAJAJ-PL/Billing/FEB 22')
                         fs5 = FileSystemStorage(location='media/BAJAJ-PL/TC Incentive/FEB 22')
 
@@ -17134,7 +17134,6 @@ def MAGMA_MIS(request):
 
     return render(request, 'FirstLevel/upload_excel.html', {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
-
 def MAGMA_BILLING(request):
     excel_data = []
     excel_data1 = []
@@ -17213,4 +17212,134 @@ def BAJAJ_PL_BILLING_DOWNLOAD(request):
     response = HttpResponse(excel,
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = "attachment; filename=BAJAJ-PL Billing.xlsx"
+    return response
+
+def MASTER_SALARY_MAGMA(request):
+    excel_data = []
+    excel_data1 = []
+    excel_data2 = []
+    FINAL_PAYOUT = pd.DataFrame()
+    COMBINED_SALARY = pd.DataFrame()
+    LTTW = pd.DataFrame()
+    AA1 = pd.DataFrame()
+
+    if request.method == 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/MAGMA/FOS Salary/FEB 22/MASTER FILE MAGMA.xlsx')):
+            if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
+                fs3 = FileSystemStorage(location='media/Employees')
+
+                A = pd.read_excel(r"media/MAGMA/FOS Salary/FEB 22/MASTER FILE MAGMA.xlsx")
+
+                A1 = list(A[(A['STATUS'] == 'PAID') & (A['FINAL PAYOUT'].isnull())].index)
+
+                A1
+
+                for i in range(0, len(A1)):
+                    A.loc[A1[i], 'TOTAL PAID'] = 0
+
+                F = pd.DataFrame(A.groupby(['FOS', 'COMPANY'])['OD+POS.'].sum()).reset_index()
+
+                F
+
+                C = pd.DataFrame(A.groupby(['FOS', 'COMPANY'])['AGREEMENTID'].count()).reset_index()
+
+                C.head(1)
+
+                F = F.merge(C, how='outer')
+
+                R1 = pd.DataFrame(A.groupby(['FOS', 'COMPANY'])['TOTAL PAID'].sum()).reset_index()
+
+                R1
+
+                F = F.merge(R1, how='outer')
+
+                F.head(1)
+
+                F.rename({'TOTAL PAID': 'TOTAL_MONEY_COLLECTION'}, axis=1, inplace=True)
+
+                F.shape
+
+                F.head()
+
+                for i in range(0, len(F['FOS'])):
+                    F.loc[i, 'Performance'] = F.loc[i, 'TOTAL_MONEY_COLLECTION'] / F.loc[i, 'OD+POS.'] * 100
+
+                F.head()
+
+                for i in range(0, len(F['FOS'])):
+                    if F.loc[i, 'Performance'] <= 8.75:
+                        F.loc[i, 'FOS_PAYOUT'] = F.loc[i, 'TOTAL_MONEY_COLLECTION'] * 3.5 / 100
+                        F.loc[i, 'PAYOUT_PERCENTAGE'] = '3.5%'
+                    elif (F.loc[i, 'Performance'] >= 8.76) and (F.loc[i, 'Performance'] <= 9.75):
+                        F.loc[i, 'FOS_PAYOUT'] = F.loc[i, 'TOTAL_MONEY_COLLECTION'] * 4.25 / 100
+                        F.loc[i, 'PAYOUT_PERCENTAGE'] = '4.25%'
+                    elif F.loc[i, 'Performance'] >= 9.76:
+                        F.loc[i, 'FOS_PAYOUT'] = F.loc[i, 'TOTAL_MONEY_COLLECTION'] * 5 / 100
+                        F.loc[i, 'PAYOUT_PERCENTAGE'] = '5%'
+
+                F.rename({'AGREEMENTID': 'TOTAL_COUNT'}, axis=1, inplace=True)
+
+                for i in range(0, len(F['FOS'])):
+                    F.loc[i, 'VISIT_PAYOUT'] = F.loc[i, 'TOTAL_COUNT'] * 100
+
+                fs3 = FileSystemStorage(location='media/Employees')
+
+                AA3 = fs3.open('Employee_Database.xlsx')
+
+                UNIQUE_NAME = pd.read_excel(AA3)
+
+                UNIQUE_NAME.head()
+
+                F = F.merge(UNIQUE_NAME, how='left', left_on='FOS', right_on='NAMES')
+
+                F.drop(['DEPARTMENT_ID', 'END_DATE', 'HIRE_DATE', 'PHONE_NUMBER', 'LOCATION_ID', 'TYPE_OF_SALARY', 'SALARY',
+                        'MANAGEMENT_LEVEL', 'NAMES', 'STAFF'], axis=1, inplace=True)
+
+                F.to_excel(r'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx', index=False)
+
+                FINAL_PAYOUT = F.copy()
+
+        else:
+            final_dep = DEP()
+            final_process = COMPANY_PROCESS()
+            Designation = Employee_Designation()
+
+            return render(request, 'FirstLevel/salary.html',
+                          {'Salary_Update': 'Please upload Allocation file for FULLERTON_RECOVERY',
+                           'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+
+    elif request.method != 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx')):
+                fs = FileSystemStorage(location='media/MAGMA/FOS Salary/FEB 22')
+                AA12 = fs.open('FIXED_PAYOUT_MAGMA.xlsx')
+                FINAL_PAYOUT = pd.read_excel(AA12)
+        else:
+            final_dep = DEP()
+            final_process = COMPANY_PROCESS()
+            Designation = Employee_Designation()
+
+            return render(request, 'FirstLevel/salary.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+
+    C = list(FINAL_PAYOUT.columns)
+
+    for j in range(0, len(FINAL_PAYOUT[C[0]])):
+        row_data = list()
+        for col in range(0, len(C)):
+            row_data.append(str(FINAL_PAYOUT.loc[j, C[col]]))
+        excel_data.append(row_data)
+
+    final_dep = DEP()
+    final_process = COMPANY_PROCESS()
+    Designation = Employee_Designation()
+
+    return render(request, 'FirstLevel/salary.html', {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+
+def MAGMA_FOS_SALARY_DOWNLOAD(request):
+    # fill these variables with real values
+    filename = os.path.join(BASE_DIR, 'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx')
+
+    excel = open(filename, 'rb')
+    response = HttpResponse(excel,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=MAGMA-AUTO FOS Salary.xlsx"
     return response

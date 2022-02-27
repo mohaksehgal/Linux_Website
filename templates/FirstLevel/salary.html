@@ -216,6 +216,38 @@
     {% endif %}
 {% endif %}
 
+{% if DEPARTMENT == 'AUTO' %}
+    {% if PROCESS == 'MAGMA' %}
+        <form method="post", enctype="multipart/form-data" style="width: 1500px;">
+            {% csrf_token %}
+            <p3 style="color:white;font-family:accidental presidency">MAGMA_FOS_SALARY</p3>
+            <button class="button1" type="submit">Salary-FOS</button>
+        </form>
+        <br>
+        <div class="center">
+            <p3 style="color:white;border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px;">FOS INCENTIVE SALARY {{PROCESS}}-{{DEPARTMENT}}</p3>
+        </div>
+        <br>
+        <!--IDFC-HL PIVOT SALARY(Incentive)-->
+        <table class="T11" style="margin-left:80px;">
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for col in columns %}
+                <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;" >{{col}}</th>
+            {% endfor %}
+            </tr>
+            {% for row in excel %}
+                <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+                {% for j in row %}
+                    <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+    <a CLASS="button" href="{% url 'basic_app:MAGMA_FOS_SALARY_DOWNLOAD' %}">MAGMA_AUTO_FINAL_SALARY_INCENTIVE_DOWNLOAD</a>
+    {% endif %}
+{% endif %}
+
 {% if DEPARTMENT == 'TW' %}
     {% if PROCESS == 'IDFC' %}
         {% if Designation == 'TL' %}
