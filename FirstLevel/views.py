@@ -17650,6 +17650,26 @@ def SLICE_FOS_SALARY_DOWNLOAD(request):
     response['Content-Disposition'] = "attachment; filename=SLICE-CC FOS Salary.xlsx"
     return response
 
+def MAGMA_MASTER_FILE_DOWNLOAD(request):
+    # fill these variables with real values
+    filename = os.path.join(BASE_DIR, 'media/MAGMA/MIS/FEB 22/MASTER FILE MAGMA.xlsx')
+
+    excel = open(filename, 'rb')
+    response = HttpResponse(excel,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=MAGMA-AUTO MASTER FILE.xlsx"
+    return response
+
+def SLICE_MASTER_FILE_DOWNLOAD(request):
+    # fill these variables with real values
+    filename = os.path.join(BASE_DIR, 'media/SLICE/MIS/FEB 22/SLICE MASTER FILE.xlsx')
+
+    excel = open(filename, 'rb')
+    response = HttpResponse(excel,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=SLICE-CC MASTER FIlE.xlsx"
+    return response
+
 def SLICE_FOS_SALARY_PER_PAID_CASE_DOWNLOAD(request):
     # fill these variables with real values
     filename = os.path.join(BASE_DIR, 'media/SLICE/FOS Salary/FEB 22/PER_CASE_SALARY_SLICE_CC.xlsx')

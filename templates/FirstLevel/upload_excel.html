@@ -172,6 +172,18 @@
     {% endif %}
 {% endif %}
 
+{% if DEPARTMENT == 'CC' %}
+    {% if PROCESS == 'SLICE' %}
+        <a class="button" href="{% url 'basic_app:SLICE_MASTER_FILE_DOWNLOAD' %}">DOWNLOAD</a>
+    {% endif %}
+{% endif %}
+
+{% if DEPARTMENT == 'AUTO' %}
+    {% if PROCESS == 'MAGMA' %}
+        <a class="button" href="{% url 'basic_app:MAGMA_MASTER_FILE_DOWNLOAD' %}">DOWNLOAD</a>
+    {% endif %}
+{% endif %}
+
 {% if DEPARTMENT == 'TW' %}
     {% if PROCESS == 'L&T' %}
         <a class="button"href="{% url 'basic_app:L_T_DOWNLOAD' %}">DOWNLOAD</a>
@@ -181,7 +193,8 @@
 {% if DEPARTMENT == 'TW' %}
     {% if PROCESS == 'IDFC' %}
         <a class="button"href="{% url 'basic_app:IDFC_TW_DOWNLOAD' %}">MIS_DOWNLOAD</a>
-        <a class="button"href="{% url 'basic_app:IDFC_TW_MASTER_DOWNLOAD' %}">MASTER_DOWNLOAD</a>    {% endif %}
+        <a class="button"href="{% url 'basic_app:IDFC_TW_MASTER_DOWNLOAD' %}">MASTER_DOWNLOAD</a>
+    {% endif %}
 {% endif %}
 
 {% if DEPARTMENT == 'OTR' %}
