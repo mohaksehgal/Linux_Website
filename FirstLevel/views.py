@@ -15122,8 +15122,7 @@ def IDFC_TW_ANALYSIS(request):
 
     if request.method != 'POST':
         if os.path.exists(os.path.join(BASE_DIR, 'media/IDFC_TW/TC Incentive/FEB 22/IDFC_TW TC Incentive.xlsx')):
-            if os.path.exists(os.path.join(BASE_DIR,
-                                           'media/COMBINED SALARY OF L_T AND IDFC TW/FEB 22/PER PAID CASE(Including Fixed Salary) IDFC-TW.xlsx')):
+            if os.path.exists(os.path.join(BASE_DIR,'media/COMBINED SALARY OF L_T AND IDFC TW/FEB 22/PER PAID CASE(Including Fixed Salary) IDFC-TW.xlsx')):
                 if os.path.exists(os.path.join(BASE_DIR, 'media/IDFC_TW/Billing/FEB 22/Final_Billing_IDFC_TW.xlsx')):
                     if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
                         fs = FileSystemStorage(location='media/IDFC_TW/TC Incentive/FEB 22')
@@ -15866,7 +15865,6 @@ def SLICE_MIS(request):
 
     return render(request, 'FirstLevel/upload_excel.html', {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
-
 def SLICE_BILLING(request):
     excel_data = []
     excel_data1 = []
@@ -15898,6 +15896,300 @@ def SLICE_BILLING(request):
 
     return render(request, 'FirstLevel/Billing.html', {'Billing1': excel_data1, 'columns1': C1, 'Total_Payout': Total_Payout, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
+def MASTER_SALARY_SLICE(request):
+    excel_data = []
+    excel_data1 = []
+    excel_data2 = []
+    FINAL_PAYOUT = pd.DataFrame()
+    COMBINED_SALARY = pd.DataFrame()
+    LTTW = pd.DataFrame()
+    AA1 = pd.DataFrame()
+
+    if request.method == 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/SLICE/MIS/FEB 22/SLICE MASTER FILE.xlsx')):
+            if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
+                fs = FileSystemStorage(location='media/SLICE/MIS/FEB 22')
+                fs3 = FileSystemStorage(location='media/Employees')
+
+                AA = fs.open('SLICE MASTER FILE.xlsx')
+                AA5 = fs3.open('Employee_Database.xlsx')
+
+                A = pd.read_excel(AA)
+                AA5 = pd.read_excel(AA5)
+
+                A.head()
+
+                B1 = pd.DataFrame(A.groupby(['user_city', 'FOS NAME'])['uuid'].count()).reset_index()
+
+                B1.rename({'user_city': 'CITY', 'uuid': 'CASE_COUNT'}, axis=1, inplace=True)
+
+                B1
+
+                B2 = pd.DataFrame(A.groupby(['user_city', 'FOS NAME'])['pos'].sum()).reset_index()
+
+                B2.head()
+
+                B2.rename({'user_city': 'CITY', 'pos': 'POS'}, axis=1, inplace=True)
+
+                B2.head()
+
+                B1 = B1.merge(B2)
+
+                B1.head()
+
+                B1.head()
+
+                A.head(1)
+
+                R1 = pd.DataFrame(A.groupby(['user_city', 'FOS NAME', 'STATUS'])['uuid'].count()).reset_index()
+
+                R1.rename({'user_city': 'CITY'}, axis=1, inplace=True)
+
+                P = B1.copy()
+
+                P.head()
+
+                P.drop({'POS', 'CASE_COUNT'}, axis=1, inplace=True)
+
+                A['STATUS'].unique()
+
+                P['FLOW'] = np.nan
+
+                P['PART PAID'] = np.nan
+
+                P['SB'] = np.nan
+
+                P['NM'] = np.nan
+
+                COL = P.columns
+
+                COL
+
+                R1.head()
+
+                for i in range(0, len(R1['FOS NAME'])):
+                    for j in range(0, len(P['FLOW'])):
+                        for k in range(0, len(COL)):
+                            if (R1.loc[i, ['FOS NAME', 'CITY']] == P.loc[j, ['FOS NAME', 'CITY']]).all() and R1.loc[i, 'STATUS'] == COL[k]:
+                                P.loc[j, COL[k]] = R1.loc[i, 'uuid']
+
+                P.head()
+
+                B1.head()
+
+                F = B1.merge(P, how='outer')
+
+                F.head()
+
+                F.fillna(0, inplace=True)
+
+                F.head()
+
+                F.rename({'FLOW': 'FLOW_CASES', 'PART PAID': 'PART_PAID_CASES', 'SB': 'SB_CASES', 'NM': 'NM_CASES'}, axis=1, inplace=True)
+
+                F.head(1)
+
+                A.head(1)
+
+                R2 = pd.DataFrame(A.groupby(['user_city', 'FOS NAME', 'STATUS'])['pos'].sum()).reset_index()
+
+                R2.head()
+
+                R2.rename({'user_city': 'CITY'}, axis=1, inplace=True)
+
+                dr = []
+                for i in range(0, len(R2['FOS NAME'])):
+                    if (R2.loc[i, 'FOS NAME'] == '--') or (R2.loc[i, 'FOS NAME'] == 'NO FOS'):
+                        dr.append(i)
+
+                R2.drop(dr, axis=0, inplace=True)
+
+                R2 = R2.reset_index(drop=True)
+
+                R2
+
+                P
+
+                for i in range(0, len(P['FOS NAME'])):
+                    for j in range(0, len(R2['FOS NAME'])):
+                        for k in range(0, len(COL)):
+                            if (R2.loc[j, ['FOS NAME', 'CITY']] == P.loc[i, ['FOS NAME', 'CITY']]).all() and (
+                                    R2.loc[j, 'STATUS'] == COL[k]):
+                                P.loc[i, COL[k]] = R2.loc[j, 'pos']
+
+                P
+
+                F = F.merge(P, how='outer')
+
+                F.head()
+
+                F.rename({'FLOW': 'FLOW_POS', 'PART PAID': 'PART_PAID_POS', 'SB': 'SB_POS', 'NM': 'NM_POS'}, axis=1, inplace=True)
+
+                F.fillna(0, inplace=True)
+
+                A.head(1)
+
+                R2 = pd.DataFrame(A.groupby(['user_city', 'FOS NAME', 'STATUS'])['PAID AMOUNT'].sum()).reset_index()
+
+                R2.head()
+
+                R2.rename({'user_city': 'CITY'}, axis=1, inplace=True)
+
+                for i in range(0, len(P['FOS NAME'])):
+                    for j in range(0, len(R2['FOS NAME'])):
+                        for k in range(0, len(COL)):
+                            if (R2.loc[j, ['FOS NAME', 'CITY']] == P.loc[i, ['FOS NAME', 'CITY']]).all() and (R2.loc[j, 'STATUS'] == COL[k]):
+                                P.loc[i, COL[k]] = R2.loc[j, 'PAID AMOUNT']
+
+                P
+
+                F = F.merge(P, how='outer')
+
+                F
+
+                F.drop({'FLOW', 'PART PAID'}, axis=1, inplace=True)
+
+                F.head()
+
+                F.fillna(0, inplace=True)
+
+                F.rename({'PAID': 'MONEY_COLLECTION'}, axis=1, inplace=True)
+
+                F.head()
+
+                for i in range(0, len(F['CITY'])):
+                    if F.loc[i, 'CITY'] == 'DELHI NCR':
+                        F.loc[i, 'FIXED_PAYOUT'] = F.loc[i, 'CASE_COUNT'] * 100
+
+                F['FIXED_PAYOUT'].fillna(0, inplace=True)
+
+                F.head()
+
+                for i in range(0, len(F['FOS NAME'])):
+                    F.loc[i, 'PERFORMANCE'] = (((F.loc[i, 'SB_POS']) + (F.loc[i, 'NM_POS'])) / F.loc[i, 'POS']) * 100
+
+                F.head(1)
+
+                F['FOS NAME'].unique()
+
+                F = F[(F['FOS NAME'] != 'NO FOS') & (F['FOS NAME'] != '--')]
+
+                F = F.reset_index(drop=True)
+
+                F.head(1)
+
+                F['CITY'].unique()
+
+                A.head(1)
+
+                A.rename({'user_city': 'CITY'}, axis=1, inplace=True)
+
+                A['PAID AMOUNT'].fillna(0, inplace=True)
+
+                for i in range(0, len(F['CITY'])):
+                    if F.loc[i, 'CITY'] == 'DELHI NCR':
+                        for j in range(0, len(A['uuid'])):
+                            if (F.loc[i, ['CITY', 'FOS NAME']] == A.loc[j, ['CITY', 'FOS NAME']]).all():
+                                if (A.loc[j, 'STATUS'] != 'PART PAID') and (A.loc[j, 'STATUS'] != 'FLOW'):
+                                    if F.loc[i, 'PERFORMANCE'] <= 65:
+                                        A.loc[j, 'FOS PAYOUT%'] = '3%'
+                                        if A.loc[j, 'PAID AMOUNT'] * 3 / 100 <= 500:
+                                            A.loc[j, 'FOS PAYOUT'] = A.loc[j, 'PAID AMOUNT'] * 3 / 100
+                                        else:
+                                            A.loc[j, 'FOS PAYOUT'] = 500
+                                    elif (F.loc[i, 'PERFORMANCE'] > 65) and (F.loc[i, 'PERFORMANCE'] <= 70):
+                                        A.loc[j, 'FOS PAYOUT%'] = '3.5%'
+                                        if A.loc[j, 'PAID AMOUNT'] * 3.5 / 100 <= 500:
+                                            A.loc[j, 'FOS PAYOUT'] = A.loc[j, 'PAID AMOUNT'] * 3.5 / 100
+                                        else:
+                                            A.loc[j, 'FOS PAYOUT'] = 500
+                                    elif F.loc[i, 'PERFORMANCE'] > 70:
+                                        A.loc[j, 'FOS PAYOUT%'] = '4.5%'
+                                        if A.loc[j, 'PAID AMOUNT'] * 4.5 / 100 <= 500:
+                                            A.loc[j, 'FOS PAYOUT'] = A.loc[j, 'PAID AMOUNT'] * 4.5 / 100
+                                        else:
+                                            A.loc[j, 'FOS PAYOUT'] = 500
+                                else:
+                                    A.loc[j, 'FOS PAYOUT'] = 0
+
+                for i in range(0, len(F['CITY'])):
+                    if F.loc[i, 'CITY'] != 'DELHI NCR':
+                        for j in range(0, len(A['uuid'])):
+                            if (F.loc[i, ['CITY', 'FOS NAME']] == A.loc[j, ['CITY', 'FOS NAME']]).all():
+                                if (A.loc[j, 'STATUS'] != 'PART PAID') and (A.loc[j, 'STATUS'] != 'FLOW'):
+                                    A.loc[j, 'FOS PAYOUT%'] = '5%'
+                                    A.loc[j, 'FOS PAYOUT'] = A.loc[j, 'PAID AMOUNT'] * 5 / 100
+
+                                else:
+                                    A.loc[j, 'FOS PAYOUT'] = 0
+
+                F.head(1)
+
+                A.head(1)
+
+                A1 = A.copy()
+
+                print(A.columns)
+
+                Incentive = (A.groupby(['CITY', 'FOS NAME'])['FOS PAYOUT'].sum()).reset_index()
+
+                F = F.merge(Incentive, how='outer')
+
+                F.head(1)
+
+                F['TOTAL SALARY'] = F['FIXED_PAYOUT'] + F['FOS PAYOUT']
+
+                F
+
+                F = F.merge(AA5, left_on='FOS NAME', right_on='NAMES', how='left')
+
+                F.drop(['DEPARTMENT_ID', 'END_DATE', 'HIRE_DATE', 'PHONE_NUMBER', 'LOCATION_ID', 'SALARY', 'TYPE_OF_SALARY', 'MANAGEMENT_LEVEL', 'NAMES'], axis=1, inplace=True)
+
+                F.head()
+
+                l1 = []
+                for i in range(0, len(F['FOS NAME'])):
+                    if F.loc[i, 'FOS NAME'] == 'NO FOS':
+                        l1.append(i)
+
+                F.drop(l1, axis=0, inplace=True)
+
+                F = F.reset_index(drop=True)
+
+                F.to_excel(r'media/SLICE/FOS Salary/FEB 22/FOS_SALARY_SLICE_CC.xlsx', index=False)
+
+                A1.to_excel(r'media/SLICE/FOS Salary/FEB 22/PER_CASE_SALARY_SLICE_CC.xlsx', index=False)
+
+                FINAL_PAYOUT = F.copy()
+
+        else:
+            return HttpResponseRedirect(reverse('basic_app:SLICE_MIS'))
+
+    elif request.method != 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/SLICE/FOS Salary/FEB 22/FOS_SALARY_SLICE_CC.xlsx')):
+                fs = FileSystemStorage(location='media/SLICE/FOS Salary/FEB 22')
+                AA12 = fs.open('FOS_SALARY_SLICE_CC.xlsx')
+                FINAL_PAYOUT = pd.read_excel(AA12)
+        else:
+            final_dep = DEP()
+            final_process = COMPANY_PROCESS()
+            Designation = Employee_Designation()
+
+            return render(request, 'FirstLevel/salary.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+
+    C = list(FINAL_PAYOUT.columns)
+
+    for j in range(0, len(FINAL_PAYOUT[C[0]])):
+        row_data = list()
+        for col in range(0, len(C)):
+            row_data.append(str(FINAL_PAYOUT.loc[j, C[col]]))
+        excel_data.append(row_data)
+
+    final_dep = DEP()
+    final_process = COMPANY_PROCESS()
+    Designation = Employee_Designation()
+
+    return render(request, 'FirstLevel/salary.html', {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
 
 def MAGMA_MIS(request):
     excel_data = []
@@ -17295,18 +17587,22 @@ def MASTER_SALARY_MAGMA(request):
                 F.drop(['DEPARTMENT_ID', 'END_DATE', 'HIRE_DATE', 'PHONE_NUMBER', 'LOCATION_ID', 'TYPE_OF_SALARY', 'SALARY',
                         'MANAGEMENT_LEVEL', 'NAMES', 'STAFF'], axis=1, inplace=True)
 
-                F.to_excel(r'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx', index=False)
+                l1=[]
+                for i in range(0,len(F['FOS'])):
+                    if F.loc[i,'FOS']=='NO FOS':
+                        l1.append(i)
+
+                F.drop(l1,axis=0,inplace=True)
+
+                F=F.reset_index(drop=True)
 
                 FINAL_PAYOUT = F.copy()
 
-        else:
-            final_dep = DEP()
-            final_process = COMPANY_PROCESS()
-            Designation = Employee_Designation()
+                F.to_excel(r'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx', index=False)
 
-            return render(request, 'FirstLevel/salary.html',
-                          {'Salary_Update': 'Please upload Allocation file for FULLERTON_RECOVERY',
-                           'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
+
+        else:
+            return HttpResponseRedirect(reverse('basic_app:MAGMA_MIS'))
 
     elif request.method != 'POST':
         if os.path.exists(os.path.join(BASE_DIR, 'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx')):
@@ -17343,3 +17639,115 @@ def MAGMA_FOS_SALARY_DOWNLOAD(request):
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = "attachment; filename=MAGMA-AUTO FOS Salary.xlsx"
     return response
+
+def SLICE_FOS_SALARY_DOWNLOAD(request):
+    # fill these variables with real values
+    filename = os.path.join(BASE_DIR, 'media/SLICE/FOS Salary/FEB 22/FOS_SALARY_SLICE_CC.xlsx')
+
+    excel = open(filename, 'rb')
+    response = HttpResponse(excel,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=SLICE-CC FOS Salary.xlsx"
+    return response
+
+def SLICE_FOS_SALARY_PER_PAID_CASE_DOWNLOAD(request):
+    # fill these variables with real values
+    filename = os.path.join(BASE_DIR, 'media/SLICE/FOS Salary/FEB 22/PER_CASE_SALARY_SLICE_CC.xlsx')
+
+    excel = open(filename, 'rb')
+    response = HttpResponse(excel,
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = "attachment; filename=SLICE-CC FOS PER PAID Salary.xlsx"
+    return response
+
+def MAGMA_AUTO_ANALYSIS(request):
+    final_dep = DEP()
+    final_process = COMPANY_PROCESS()
+    Designation = Employee_Designation()
+
+    if request.method != 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/MAGMA/Billing/FEB 22/MAGMA BILLING.xlsx')):
+            if os.path.exists(os.path.join(BASE_DIR, 'media/MAGMA/FOS Salary/FEB 22/FIXED_PAYOUT_MAGMA.xlsx')):
+                    if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
+                        fs2 = FileSystemStorage(location='media/MAGMA/Billing/FEB 22')
+                        fs3 = FileSystemStorage(location='media/Employees')
+                        fs5 = FileSystemStorage(location='media/MAGMA/FOS Salary/FEB 22')
+
+                        AA2 = fs2.open('MAGMA BILLING.xlsx')
+                        AA3 = fs3.open('Employee_Database.xlsx')
+                        AA5 = fs5.open('FIXED_PAYOUT_MAGMA.xlsx')
+
+                        AA2 = pd.read_excel(AA2)
+                        AA3 = pd.read_excel(AA3)
+                        AA5 = pd.read_excel(AA5)
+
+                        AA6 = AA3[(AA3['DESIGNATION'] != 'FOS') & (AA3['PROCESS'] == 'MAGMA') & (AA3['DEPARTMENT'] == 'AUTO') & (AA3['EMPLOYEE_STATUS'] == 'ACTIVE')]
+
+                        print(AA6)
+
+                        AA6 = AA6.reset_index(drop=True)
+
+                        AA2['FINAL PAYOUT'].fillna(0,inplace=True)
+
+                        TOTAL_BILLING = AA2['FINAL PAYOUT'].sum()
+                        FIXED_COSTING_OFFICE = AA6['SALARY'].sum()
+                        FOS_FIXED_SALARY_MAGMA = AA5['VISIT_PAYOUT'].sum()
+                        FOS_INCENTIVE_SALARY_MAGMA = AA5['FOS_PAYOUT'].sum()
+                        FINAL_FOS_SALARY = FOS_FIXED_SALARY_MAGMA + FOS_INCENTIVE_SALARY_MAGMA
+                        FINAL_COSTING = FIXED_COSTING_OFFICE + FINAL_FOS_SALARY
+                        MAGMA_PROFIT = round(TOTAL_BILLING - FINAL_COSTING, 2)
+                        MAGMA_PROFIT_PERCENTAGE = round((MAGMA_PROFIT / TOTAL_BILLING) * 100, 2)
+
+                        return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'TOTAL_BILLING': TOTAL_BILLING, 'FIXED_COSTING_OFFICE': FIXED_COSTING_OFFICE, 'FOS_FIXED_SALARY_MAGMA': FOS_FIXED_SALARY_MAGMA, 'FOS_INCENTIVE_SALARY_MAGMA': FOS_INCENTIVE_SALARY_MAGMA, 'FINAL_FOS_SALARY': FINAL_FOS_SALARY, 'FINAL_COSTING': FINAL_COSTING, 'MAGMA_PROFIT': MAGMA_PROFIT, 'MAGMA_PROFIT_PERCENTAGE': MAGMA_PROFIT_PERCENTAGE})
+
+            else:
+                return render(request, 'FirstLevel/analysis.html',
+                              {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation,
+                               'STATUS': 'Please Refresh FOS Data'})
+        else:
+            return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh BILLING and FOS Salary Data'})
+
+def SLICE_AUTO_ANALYSIS(request):
+    final_dep = DEP()
+    final_process = COMPANY_PROCESS()
+    Designation = Employee_Designation()
+
+    if request.method != 'POST':
+        if os.path.exists(os.path.join(BASE_DIR, 'media/SLICE/Billing/FEB 22/SLICE BILLING.xlsx')):
+            if os.path.exists(os.path.join(BASE_DIR, 'media/SLICE/FOS Salary/FEB 22/FOS_SALARY_SLICE_CC.xlsx')):
+                    if os.path.exists(os.path.join(BASE_DIR, 'media/Employees/Employee_Database.xlsx')):
+                        fs2 = FileSystemStorage(location='media/SLICE/Billing/FEB 22')
+                        fs3 = FileSystemStorage(location='media/Employees')
+                        fs5 = FileSystemStorage(location='media/SLICE/FOS Salary/FEB 22')
+
+                        AA2 = fs2.open('SLICE BILLING.xlsx')
+                        AA3 = fs3.open('Employee_Database.xlsx')
+                        AA5 = fs5.open('FOS_SALARY_SLICE_CC.xlsx')
+
+                        AA2 = pd.read_excel(AA2)
+                        AA3 = pd.read_excel(AA3)
+                        AA5 = pd.read_excel(AA5)
+
+                        AA6 = AA3[(AA3['DESIGNATION'] != 'FOS') & (AA3['PROCESS'] == 'SLICE') & (AA3['DEPARTMENT'] == 'CC') & (AA3['EMPLOYEE_STATUS'] == 'ACTIVE')]
+
+                        print(AA6)
+
+                        AA6 = AA6.reset_index(drop=True)
+
+                        AA2['PAYOUT'].fillna(0,inplace=True)
+
+                        TOTAL_BILLING = AA2['PAYOUT'].sum()
+                        FIXED_COSTING_OFFICE = AA6['SALARY'].sum()
+                        FOS_FIXED_SALARY_SLICE = AA5['FIXED_PAYOUT'].sum()
+                        FOS_INCENTIVE_SALARY_SLICE = AA5['FOS PAYOUT'].sum()
+                        FINAL_FOS_SALARY = FOS_FIXED_SALARY_SLICE + FOS_INCENTIVE_SALARY_SLICE
+                        FINAL_COSTING = FIXED_COSTING_OFFICE + FINAL_FOS_SALARY
+                        SLICE_PROFIT = round(TOTAL_BILLING - FINAL_COSTING, 2)
+                        SLICE_PROFIT_PERCENTAGE = round((SLICE_PROFIT / TOTAL_BILLING) * 100, 2)
+
+                        return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'TOTAL_BILLING': TOTAL_BILLING, 'FIXED_COSTING_OFFICE': FIXED_COSTING_OFFICE, 'FOS_FIXED_SALARY_SLICE': FOS_FIXED_SALARY_SLICE, 'FOS_INCENTIVE_SALARY_SLICE': FOS_INCENTIVE_SALARY_SLICE, 'FINAL_FOS_SALARY': FINAL_FOS_SALARY, 'FINAL_COSTING': FINAL_COSTING, 'SLICE_PROFIT': SLICE_PROFIT, 'SLICE_PROFIT_PERCENTAGE': SLICE_PROFIT_PERCENTAGE})
+
+            else:
+                return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh FOS Data'})
+        else:
+            return render(request, 'FirstLevel/analysis.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'STATUS': 'Please Refresh BILLING and FOS Salary Data'})

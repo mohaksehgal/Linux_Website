@@ -59,47 +59,93 @@
 <p3 style="color:red;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">*This does not count overhead costing of the process</p3>
 {% endif %}
 
-{% if Designation == 'MANAGER'  and DEPARTMENT == 'RECOVERY' and PROCESS == 'FULLERTON' %}
+{% if Designation == 'MANAGER'  and DEPARTMENT == 'AUTO' and PROCESS == 'MAGMA' %}
 <!--<p3 style="color:red;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{STATUS}}</p3>-->
 <!--<br>-->
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY FIXED COSTING FOS</p3>
-<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FIXED_COSTING_FOS}}</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA FIXED COSTING FOS</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FOS_FIXED_SALARY_MAGMA}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY INCENTIVE COSTING FOS</p3>
-<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{INCENTIVE_COSTING_FOS}}</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA INCENTIVE COSTING FOS</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FOS_INCENTIVE_SALARY_MAGMA}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY TOTAL FOS COSTING</p3>
-<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{TOTAL_FOS_COSTING}}</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA TOTAL FOS COSTING</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FINAL_FOS_SALARY}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY FIXED COSTING OFFICE</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA FIXED COSTING OFFICE</p3>
 <p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FIXED_COSTING_OFFICE}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY FINAL COSTING INCLUSIVE OF ALL</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA FINAL COSTING INCLUSIVE OF ALL</p3>
 <p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FINAL_COSTING}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY TOTAL BILLING</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA TOTAL BILLING</p3>
 <p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{TOTAL_BILLING}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON_RECOVERY P&L</p3>
-<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{P_L_FULLERTON_RECOVERY}}</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA P&L</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{MAGMA_PROFIT}}</p3>
 <br>
 <br>
 <br>
-<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">FULLERTON RECOVERY P&L%</p3>
-<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{P_L_FULLERTON_RECOVERY_PERCENTAGE}}</p3>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MAGMA P&L%</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{MAGMA_PROFIT_PERCENTAGE}}</p3>
+<br>
+<br>
+<p3 style="color:red;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">*This does not count overhead costing of the process</p3>
+{% endif %}
+
+{% if Designation == 'TL'  and DEPARTMENT == 'CC' and PROCESS == 'SLICE' %}
+<!--<p3 style="color:red;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{STATUS}}</p3>-->
+<!--<br>-->
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE FIXED COSTING FOS</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FOS_FIXED_SALARY_SLICE}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE INCENTIVE COSTING FOS</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FOS_INCENTIVE_SALARY_SLICE}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE TOTAL FOS COSTING</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FINAL_FOS_SALARY}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE FIXED COSTING OFFICE</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FIXED_COSTING_OFFICE}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE FINAL COSTING INCLUSIVE OF ALL</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{FINAL_COSTING}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE TOTAL BILLING</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{TOTAL_BILLING}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE P&L</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{SLICE_PROFIT}}</p3>
+<br>
+<br>
+<br>
+<p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">SLICE P&L%</p3>
+<p3 style="color:white;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">{{SLICE_PROFIT_PERCENTAGE}}</p3>
 <br>
 <br>
 <p3 style="color:red;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">*This does not count overhead costing of the process</p3>

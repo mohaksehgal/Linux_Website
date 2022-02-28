@@ -80,13 +80,13 @@
                 <A HREF="#"><STRONG>DASHBOARD</STRONG></A>
             </LI>
             <LI>
-                <A HREF="#" target="AB"><STRONG>SALARIES</STRONG></A>
+                <A HREF="{% url 'basic_app:MASTER_SALARY_SLICE' %}" target="AB"><STRONG>SALARIES</STRONG></A>
             </LI>
             <LI>
                 <A HREF= "{% url 'basic_app:SLICE_BILLING' %}" target="AB"><STRONG>BILLING</STRONG></A>
             </LI>
             <LI>
-                <A href="#" target="AB"><STRONG>ANALYSIS</STRONG></A>
+                <A href="{% url 'basic_app:SLICE_AUTO_ANALYSIS' %}" target="AB"><STRONG>ANALYSIS</STRONG></A>
             </LI>
             <LI>
                 <A HREF= "{% url 'basic_app:SLICE_MIS' %}" target="AB"><STRONG>FILE MANAGEMENT</STRONG></A>
@@ -117,7 +117,7 @@
                 <A HREF= "{% url 'basic_app:MAGMA_BILLING' %}" target="AB"><STRONG>BILLING</STRONG></A>
             </LI>
             <LI>
-                <A href="#" target="AB"><STRONG>ANALYSIS</STRONG></A>
+                <A href="{% url 'basic_app:MAGMA_AUTO_ANALYSIS' %}" target="AB"><STRONG>ANALYSIS</STRONG></A>
             </LI>
             <LI>
                 <A HREF= "{% url 'basic_app:MAGMA_MIS' %}" target="AB"><STRONG>FILE MANAGEMENT</STRONG></A>
