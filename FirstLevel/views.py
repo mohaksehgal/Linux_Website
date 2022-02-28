@@ -15504,13 +15504,12 @@ def SLICE_MIS(request):
                 else:
                     A.loc[i, 'STATUS'] = 'FLOW'
             elif A.loc[i, 'Currentbucket'] == 'BKT1':
-                if A.loc[i, 'PAID AMOUNT'] < A.loc[i, 'total_pending_emi_amount']:
-                    A.loc[i, 'STATUS'] = 'PART PAID'
-                elif (A.loc[i, 'PAID AMOUNT'] >= round(A.loc[i, 'total_pending_emi_amount'] / 2)) and (
-                        A.loc[i, 'PAID AMOUNT'] < A.loc[i, 'total_pending_emi_amount']):
+                if (A.loc[i, 'PAID AMOUNT'] >= round(A.loc[i, 'total_pending_emi_amount'] / 2)) and (A.loc[i, 'PAID AMOUNT'] < A.loc[i, 'total_pending_emi_amount']):
                     A.loc[i, 'STATUS'] = 'SB'
                 elif A.loc[i, 'PAID AMOUNT'] >= A.loc[i, 'total_pending_emi_amount']:
                     A.loc[i, 'STATUS'] = 'NM'
+                elif A.loc[i, 'PAID AMOUNT'] < A.loc[i, 'total_pending_emi_amount']:
+                    A.loc[i, 'STATUS'] = 'PART PAID'
                 else:
                     A.loc[i, 'STATUS'] = 'FLOW'
             elif A.loc[i, 'Currentbucket'] == 'BKT2':
