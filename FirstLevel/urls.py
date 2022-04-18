@@ -102,4 +102,5 @@ urlpatterns = [
     path('BAJAJ_CD_ANALYSIS/', views.BAJAJ_CD_ANALYSIS, name='BAJAJ_CD_ANALYSIS'),
     path('IDFC_HL_ANALYSIS/', views.IDFC_HL_ANALYSIS, name='IDFC_HL_ANALYSIS'),
     path('MAGMA_AUTO_ANALYSIS/', views.MAGMA_AUTO_ANALYSIS, name='MAGMA_AUTO_ANALYSIS'),
+    path('login/FOS_COMBINED_MIS.html', views.FOS_COMBINED_SALARY, name='combined_salary'),
 ]

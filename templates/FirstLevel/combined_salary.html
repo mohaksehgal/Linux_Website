@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width , initial- scale 1.0">
+    <title>ESSENCCIA OUTSOURCING</title>
+    <link rel="stylesheet" href="{% static 'FirstLevel/css/combined_salary.css' %}">
+</head>
+<body>
+{% if Designation == 'FOS' %}
+      <br><br><br><br><br><br><br>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px;">Your Fixed Salary for TW is: </p><p style="color:white">{{Fixed_Payout_FOS}}</p>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:170px;">Your Incentive for TW is: </p><p style="color:white">{{Incentive_Payout_FOS}}</p>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:260px;">Your Fixed Salary for FULLERTON is: </p><p style="color:white">{{FULLERTON_INCENTIVE_FOS}}</p>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:240px;">Your Incentive for FULLERTON is: </p><p style="color:white">{{FULLERTON_FIXED_FOS}}</p>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px;">Your Fixed for IDFC_HL is: </p><p style="color:white">{{IDFC_HL_FIXED_FOS}}</p>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:210px;">Your Incentive for IDFC_HL is: </p><p style="color:white">{{IDFC_HL_INCENTIVE_FOS}}</P>
+      <p class="like" style="  border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:135px;">Your Total Salary is: </p><p style="color:white">{{Total_Salary_FOS}}</p>
+      <p style="color:white;text-align:center;border: 2px solid #d3ae6d;border-radius: 12px;padding: 5px;width:190px;margin-left: 693px;">IDFC-TW & L&T-TW</p>
+      <br>
+      <table class="one">
+        <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+        {% for col in columns2 %}
+            <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;">{{col}}</th>
+        {% endfor %}
+        </tr>
+        {% for row in excel2 %}
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for j in row %}
+                <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <p style="color:white;text-align:center;border: 2px solid #d3ae6d;border-radius: 12px;padding: 5px;width:190px;margin-left: 693px;">IDFC-TW & L&T-TW</p>
+      <table class="two">
+        <tr target="A" style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+        {% for col in columns3 %}
+            <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;">{{col}}</th>
+        {% endfor %}
+        </tr>
+        {% for row in excel3 %}
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for j in row %}
+                <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <p style="color:white;text-align:center;border: 2px solid #d3ae6d;border-radius: 12px;padding: 5px;width:190px;margin-left: 693px;">FULLERTON-RECOVERY</p>
+      <table class="three">
+        <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+        {% for col in columns4 %}
+            <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;">{{col}}</th>
+        {% endfor %}
+        </tr>
+        {% for row in excel4 %}
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for j in row %}
+                <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <p style="color:white;text-align:center;border: 2px solid #d3ae6d;border-radius: 12px;padding: 5px;width:190px;margin-left: 693px;">IDFC-HL</p>
+      <table class="four">
+        <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+        {% for col in columns5 %}
+            <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;">{{col}}</th>
+        {% endfor %}
+        </tr>
+        {% for row in excel5 %}
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for j in row %}
+                <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <p style="color:white;text-align:center;border: 2px solid #d3ae6d;border-radius: 12px;padding: 5px;width:190px;margin-left: 693px;">IDFC-HL</p>
+      <table class="five">
+        <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+        {% for col in columns6 %}
+            <th style="color:black;background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px;">{{col}}</th>
+        {% endfor %}
+        </tr>
+        {% for row in excel6 %}
+            <tr style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">
+            {% for j in row %}
+                <td style="color:black;background-color:white;border:1px solid black;font-size:11px;font-weight:normal;text-align:center;border-top:none;border-right:none;">{{j}}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+      </table>
+  {% endif %}
+
+</body>
+</html>

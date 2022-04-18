@@ -1,0 +1,134 @@
+    body{overflow:scroll;}
+    ::-webkit-scrollbar {
+    width: 0px;}
+.T1,.T3,.T6,.T8,.T9, {
+   border-collapse: collapse;
+   border-spacing: 0;
+   width: 170%;
+   border: 1px solid #ddd;
+ }
+ table.T4{
+ WIDTH:324%;
+ }
+table.T10{
+WIDTH:134%;
+}
+table.T13{
+width:170%;}
+  table.T11{
+  border-collapse: collapse;
+   border-spacing: 0;
+   width: 87%;
+   border: 1px solid #ddd;
+ }
+ table.T2{
+ width:170%;
+ }
+
+  table.T7{
+ WIDTH:270%;
+ }
+
+  table.T9{
+ WIDTH:310%;
+ }
+
+ table.T8{
+ WIDTH:100%
+ }
+table{
+ border-collapse: collapse;
+   border-spacing: 0;
+   width: 100%;
+   border: 1px solid #ddd;
+ }
+
+
+ th, td {
+   text-align: centre;
+   padding: 8px;
+ }
+
+ tr:nth-child(even){background-color: #f2f2f2}
+
+ .center {
+   margin-left: 330px;
+   margin-right: auto;
+   width: 60%;
+   padding: 10px;
+     text-align:center;
+     }
+
+ .button{
+   display: inline-block;
+   padding: 15px 25px;
+   font-size: 10px;
+   cursor: pointer;
+   text-align: center;
+   text-decoration: none;
+   outline: none;
+   color: black;
+   background-color:#d3ae6d ;
+   border: 1px solid black;
+   border-radius: 15px;
+   box-shadow: 0 3px #f1d88b;
+ }
+
+ .button:hover {background-color:#d3ae6d; }
+
+ .button:active {
+   background-color: #d3ae6d;
+   /** box-shadow: 0 5px #f1d88b; **/
+   transform: translateY(4px);
+ }
+
+
+.button1{
+   display: inline-block;
+   padding: 2px 25px;
+   font-size: 15px;
+   cursor: pointer;
+   text-align: center;
+   text-decoration: none;
+   outline: none;
+   color: black;
+   background-color:#d3ae6d ;
+   border: 1;
+   border-radius: 15px;
+ }
+
+ .button1:active {
+   background-color: #d3ae6d;
+   box-shadow: 0 5px BLACK;
+   transform: translateY(4px);
+ }
+
+
+.button2{
+   display: inline-block;
+   padding: 2px 25px;
+   font-size: 15px;
+   cursor: pointer;
+   text-align: center;
+   text-decoration: none;
+   outline: none;
+   color: black;
+   background-color:#d3ae6d ;
+   border: 1;
+   border-radius: 15px;
+ }
+
+
+ .button2:active {
+   background-color: #d3ae6d;
+   box-shadow: 0 5px BLACK;
+   transform: translateY(4px);
+ }
+     body{
+    overflow:scroll;
+    height: 4600px;
+    width: 1045px;
+    }
+    ::-webkit-scrollbar {
+    width: 0px;}
+p.like{color:white;}
