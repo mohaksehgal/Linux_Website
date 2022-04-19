@@ -23,7 +23,7 @@ color: white;
     width: 100%;
     padding: 0px;
     position: relative;
-    top: 19%;
+    top: 29%;
     left: 50%;
     transform: translate(-50% , -50%);
     background: none;
@@ -58,7 +58,7 @@ H1{
     padding-top: 30px;
     padding-bottom: 20px;
     position: relative;
-    top: 53%;
+    top: 62%;
     left: 50%;
     transform: translate(-50% , -50%);
     background: #191919;
@@ -99,7 +99,7 @@ color: white;
     width: 100%;
     padding: 0px;
     position: relative;
-    top: 17%;
+    top: 27%;
     left: 50%;
     transform: translate(-50% , -50%);
     background: none;
@@ -152,4 +152,36 @@ input::placeholder{
 
     ::-webkit-scrollbar {
     width: 0px;}
-
+@media (max-width:1200px){
+.boxx{
+    color: white;
+    width: 22%;
+    min-height: 457px;
+    height: 60vh;
+    min-width: 172px;
+    max-width: 445px;
+    padding: 40px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    position: relative;
+    top: 64%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    background: #191919;
+    opacity: 50%;
+    border-radius: 15px;
+    text-align: center;
+}
+.error{
+color: white;
+    overflow: hidden;
+    width: 100%;
+    padding: 0px;
+    position: relative;
+    top: 31%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    background: none;
+    text-align: center;
+}
+}

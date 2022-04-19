@@ -101,7 +101,7 @@ OL.block a{
 .frames{
 margin-left: 184px;
 /*max-width: 1330px;*/
-width: 90%;
+width: 85%;
 height: 76vh;
  position: fixed;
 border: 2px solid rgb(211, 174, 109);
@@ -166,23 +166,23 @@ height:74vh;
 }
 @media (max-width:1200px) {
 h1{
-    margin-top: 28px;
+    margin-top: 5px;
     background: none;
     left: 0%;
     max-width: 1605px;
     text-align: center;
     position: fixed;
-    font-size:4vw;
+    font-size:3.69vw;
 }
 .frames1{
 display:none;
 }
 .hide{
 display:block;
-margin-top:85px;
+margin-top:59px;
 }
 iframe.frames{
-margin-top:111px;
+margin-top:85px;
 }
 }
 @media(max-width:1074px){

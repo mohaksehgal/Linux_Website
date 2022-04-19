@@ -8,9 +8,14 @@ body{
 }
 nav{
   margin-top: 15px;
+  position:fixed;
+  width:1532px;
+
 }
 ul.nav{
   margin-top: 22px;
+  margin-left:531px;
+  margin-right:0px;
 }
 nav img{
     top: 10px;
