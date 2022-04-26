@@ -70,6 +70,20 @@
          <p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MIS for BAJAJ-CD</p3>
          {{FR}}
         </div>
+        <div class='progress-wrapper'>
+            <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+        </div>
+        <div id="progress-bar-message">Waiting for progress to start...</div>
+        <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+        <script>
+            {% if task_id %}
+                // vanilla JS version
+                document.addEventListener("DOMContentLoaded", function () {
+                var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+                CeleryProgressBar.initProgressBar(progressUrl);
+                });
+            {% endif %}
+        </script>
         <br>
          <table class="center" style="margin-left: 7px;">
              <tr style="background-color:white;border:1px solid black;border-right:none;font-size:12px;border-top-width:3px;border-bottom-width:3px; width:100px; height:17px">
@@ -140,6 +154,21 @@
              <input type="file" name="Paid_File"style="color:white;border-radius:17px;">
              <button class="button1" type="submit" style="border-radius:17px;">Upload</button>
          </form>
+
+        <div class='progress-wrapper'>
+            <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+        </div>
+        <div id="progress-bar-message">Waiting for progress to start...</div>
+        <script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+        <script>
+            {% if task_id %}
+                // vanilla JS version
+                document.addEventListener("DOMContentLoaded", function () {
+                var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+                CeleryProgressBar.initProgressBar(progressUrl);
+                });
+            {% endif %}
+        </script>
 
         <div class="center">
         <p3 style="color:white; border: 2px solid #d3ae6d;  border-radius: 12px;   padding: 5px; width:190px; font-size:13px;">MIS {{PROCESS}}-{{DEPARTMENT}}</p3>

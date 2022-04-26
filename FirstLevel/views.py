@@ -1031,13 +1031,30 @@ def IDFC_TW_MIS(request):
         B = pd.read_excel(Paidfile1)
         A1 = A.to_json()
         B1 = B.to_json()
-        IDFC_TW_MIS_TASK.delay(A1, B1)
+
+        task = IDFC_TW_MIS_TASK.delay(A1, B1)
 
     elif request.method != 'POST':
         if os.path.exists(os.path.join(BASE_DIR, 'media/IDFC_TW/MIS/MAR 22/Performance_IDFC_TW.xlsx')):
             fs = FileSystemStorage(location='media/IDFC_TW/MIS/MAR 22')
             AA = fs.open('Performance_IDFC_TW.xlsx')
             F1 = pd.read_excel(AA)
+
+            C = list(F1.columns)
+
+            for j in range(0, len(F1[C[0]])):
+                row_data = list()
+                for col in range(0, len(C)):
+                    row_data.append(str(F1.loc[j, C[col]]))
+                excel_data.append(row_data)
+
+            final_dep = DEP()
+            final_process = COMPANY_PROCESS()
+            Designation = Employee_Designation()
+
+            return render(request, 'FirstLevel/upload_excel.html',
+                          {'excel': excel_data, 'columns': C, 'DEPARTMENT': final_dep, 'PROCESS': final_process,
+                           'Designation': Designation})
         else:
             final_dep = DEP()
             final_process = COMPANY_PROCESS()
@@ -1058,8 +1075,7 @@ def IDFC_TW_MIS(request):
     final_process = COMPANY_PROCESS()
     Designation = Employee_Designation()
 
-    return render(request, 'FirstLevel/upload_excel.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation})
-
+    return render(request, 'FirstLevel/upload_excel.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'task_id': task.task_id})
 
 def IDFC_TW_BILLING(request):
     excel_data1 = []
@@ -11041,7 +11057,7 @@ def BAJAJ_PL_MIS(request):
         print(A1)
         print(B1)
 
-        BAJAJ_PL_MIS_TASK.delay(A1,B1)
+        task = BAJAJ_PL_MIS_TASK.delay(A1,B1)
 
         BAJAJ_PL = 'yes there is data for BAJAJ-PL'
 
@@ -11118,7 +11134,7 @@ def BAJAJ_PL_MIS(request):
             return render(request, 'FirstLevel/upload_excel.html',
                           {'excel1': excel_data1, 'columns1': C1, 'excel2': excel_data2, 'columns2': C2,
                            'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation,
-                           'BAJAJ_CD': 'Please Upload file for BAJAJ-CD'})
+                           'BAJAJ_CD': 'Please Upload file for BAJAJ-CD', 'task_id': None})
 
         else:
             final_dep = DEP()
@@ -11127,37 +11143,44 @@ def BAJAJ_PL_MIS(request):
 
             return render(request, 'FirstLevel/upload_excel.html',
                           {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation,
-                           'Overall': 'Please upload files for all the process'})
-
-    C1 = list(SS.columns)
-    C2 = list(P.columns)
-
-    if BAJAJ_PL == 'yes there is data for BAJAJ-PL':
-        for j in range(0, len(SS[C1[0]])):
-            row_data = list()
-            for col in range(0, len(C1)):
-                row_data.append(str(SS.loc[j, C1[col]]))
-            excel_data1.append(row_data)
-
-        for j in range(0, len(P[C2[0]])):
-            row_data = list()
-            for col in range(0, len(C2)):
-                row_data.append(str(P.loc[j, C2[col]]))
-            excel_data2.append(row_data)
-
-    if BAJAJ_CD == 'yes there is data for BAJAJ-CD':
-        C = list(SS1.columns)
-        for j in range(0, len(SS1[C[0]])):
-            row_data = list()
-            for col in range(0, len(C)):
-                row_data.append(str(SS1.loc[j, C[col]]))
-            excel_data.append(row_data)
+                           'Overall': 'Please upload files for all the process', 'task_id': None})
 
     final_dep = DEP()
     final_process = COMPANY_PROCESS()
     Designation = Employee_Designation()
 
-    return render(request, 'FirstLevel/upload_excel.html', {'excel': excel_data, 'columns': C, 'excel1': excel_data1, 'columns1': C1, 'excel2': excel_data2, 'columns2': C2, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'BAJAJ_CD': QQ2})
+    return render(request, 'FirstLevel/upload_excel.html', {'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'task_id': task.task_id})
+
+    # C1 = list(SS.columns)
+    # C2 = list(P.columns)
+    #
+    # if BAJAJ_PL == 'yes there is data for BAJAJ-PL':
+    #     for j in range(0, len(SS[C1[0]])):
+    #         row_data = list()
+    #         for col in range(0, len(C1)):
+    #             row_data.append(str(SS.loc[j, C1[col]]))
+    #         excel_data1.append(row_data)
+    #
+    #     for j in range(0, len(P[C2[0]])):
+    #         row_data = list()
+    #         for col in range(0, len(C2)):
+    #             row_data.append(str(P.loc[j, C2[col]]))
+    #         excel_data2.append(row_data)
+    #
+    # if BAJAJ_CD == 'yes there is data for BAJAJ-CD':
+    #     C = list(SS1.columns)
+    #     for j in range(0, len(SS1[C[0]])):
+    #         row_data = list()
+    #         for col in range(0, len(C)):
+    #             row_data.append(str(SS1.loc[j, C[col]]))
+    #         excel_data.append(row_data)
+    #
+    # final_dep = DEP()
+    # final_process = COMPANY_PROCESS()
+    # Designation = Employee_Designation()
+    #
+    #
+    # return render(request, 'FirstLevel/upload_excel.html', {'excel': excel_data, 'columns': C, 'excel1': excel_data1, 'columns1': C1, 'excel2': excel_data2, 'columns2': C2, 'DEPARTMENT': final_dep, 'PROCESS': final_process, 'Designation': Designation, 'BAJAJ_CD': QQ2, 'task_id': task.task_id})
 
 
 def BAJAJ_BILLING(request):

@@ -1,4 +1,6 @@
+import celery
 from celery import shared_task
+from celery import current_task
 
 from django.shortcuts import render
 import json
@@ -9,6 +11,7 @@ import numpy as np
 import os
 import warnings
 import math
+from celery_progress.backend import ProgressRecorder
 
 warnings.filterwarnings('ignore')
 
@@ -40,6 +43,12 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
     B2 = pd.DataFrame(B.groupby(['AGREEMENTID', 'TC'])['PAID AMOUNT'].count()).reset_index()
 
     ECS = pd.DataFrame(B.groupby(['AGREEMENTID', 'MODE'])['PAID AMOUNT'].sum()).reset_index()
+
+    print(current_task)
+
+    progress_recorder=ProgressRecorder(task= current_task)
+
+    progress_recorder.set_progress(current = 1, total = 7)
 
     ECS = ECS[ECS['MODE'] == 'ECS']
 
@@ -79,6 +88,8 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
 
     B1
 
+    progress_recorder.set_progress(current= 2, total = 7)
+
     A = A.merge(B2, left_on='LOAN AGREEMENT NO', right_on='LOAN_NUMBER', how='left')
 
     A = A.merge(B1, left_on='LOAN AGREEMENT NO', right_on='LOAN_NUMBER', how='left')
@@ -95,6 +106,8 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
         elif str(A.loc[i, 'PAID AMOUNT']) != 'nan':
             A.loc[i, 'MOHAK STATUS'] = 'PAID'
 
+    progress_recorder.set_progress(current= 3, total = 7)
+
     A.head(1)
 
     for i in range(0, len(A['LOAN AGREEMENT NO'])):
@@ -109,6 +122,8 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
     A['PAID TC'].unique()
 
     A.rename({'MOHAK STATUS': 'STATUS'}, axis=1, inplace=True)
+
+    progress_recorder.set_progress(current= 4, total = 7)
 
     for i in range(0, len(A['LOAN AGREEMENT NO'])):
         A.loc[i, 'OD AMOUNT'] = (A.loc[i, 'BOM_BUCKET'] + 1) * A.loc[i, 'INST AMT']
@@ -127,6 +142,8 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
             A.loc[i, 'PAID FEEDBACK'] = 'UNPAID'
 
     A.to_excel(r'media/BAJAJ-PL/MIS/MAR 22/MASTER_FILE_BAJAJ-PL.xlsx', index=False)
+
+    progress_recorder.set_progress(current= 5, total = 7)
 
     for i in range(0, len(A['LOAN AGREEMENT NO'])):
         if A.loc[i, 'STATUS'] == 'PAID':
@@ -191,6 +208,8 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
 
     P.to_excel(r'media/BAJAJ-PL/MIS/MAR 22/BAJAJ-PL TC MIS.xlsx', index=False)
 
+    progress_recorder.set_progress(current= 6, total = 7)
+
     A.head()
 
     SS = pd.DataFrame(A.groupby(['BOM_BUCKET'])['POS', 'PAID AMOUNT'].sum().reset_index())
@@ -242,6 +261,7 @@ def BAJAJ_PL_MIS_TASK(A1,B1):
 
     A23.to_excel(r'media/BAJAJ-PL/Billing/MAR 22/BAJAJ-PL Billing MIS.xlsx', index=False)
 
+    progress_recorder.set_progress(current= 7, total = 7)
 
 
 @shared_task
@@ -257,10 +277,16 @@ def IDFC_TW_MIS_TASK(A1,B1):
     A=A.reset_index(drop=True)
     B=B.reset_index(drop=True)
 
+    progress_recorder = ProgressRecorder(task=current_task)
+
+    progress_recorder.set_progress(current=1, total=7)
+
     A.to_excel(r'media/IDFC_TW/MIS/MAR 22/IDFC-TW ALLOCATION.xlsx', index=False)
     B.to_excel(r'media/IDFC_TW/MIS/MAR 22/IDFC-TW PAID FILE.xlsx', index=False)
 
     B1 = pd.DataFrame(B.groupby('AGREEMENTID')['PAID AMOUNT'].sum()).reset_index()
+
+    print(B1)
 
     for i in range(0, len(A['AGREEMENTID'])):
         for k in range(0, len(B['AGREEMENTID'])):
@@ -309,6 +335,8 @@ def IDFC_TW_MIS_TASK(A1,B1):
         for j in range(0, len(B1['PAID AMOUNT'])):
             if A.loc[i, 'AGREEMENTID'] == B1.loc[j, 'AGREEMENTID']:
                 A.loc[i, 'TOTAL PAID'] = B1.loc[j, 'PAID AMOUNT']
+
+    progress_recorder.set_progress(current=2, total=7)
 
     M = pd.DataFrame(A.groupby(['COMPANY', 'BKT', 'STATE'])['POS'].sum()).reset_index()
 
@@ -378,6 +406,8 @@ def IDFC_TW_MIS_TASK(A1,B1):
         F.loc[i, 'PART_PAID_POS%'] = round((F.loc[i, 'PART_PAID_POS'] / F.loc[i, 'TOTAL_POS']) * 100, 2)
         F.loc[i, 'RT_POS%'] = round((F.loc[i, 'RT_POS'] / F.loc[i, 'TOTAL_POS']) * 100, 2)
 
+    progress_recorder.set_progress(current=3, total=7)
+
     TP = pd.DataFrame(A.groupby(['COMPANY', 'BKT', 'STATE'])['TOTAL PAID'].sum()).reset_index()
 
     F = F.merge(TP, how='outer')
@@ -397,6 +427,8 @@ def IDFC_TW_MIS_TASK(A1,B1):
               'SETTLEMENT_POS': 'SC_POS', 'FORECLOSE_POS%': 'FC_POS%', 'SETTLEMENT_POS%': 'SC_POS%',
               'PART_PAID_POS%': 'PP_POS%', 'PERFORMANCE': 'POS_RES%'}, axis=1, inplace=True)
 
+    progress_recorder.set_progress(current=4, total=7)
+
     for i in range(0, len(F['FLOW_CASES'])):
         F.loc[i, 'TOTAL_POS'] = round(F.loc[i, 'TOTAL_POS'], 2)
         F.loc[i, 'FLOW_POS'] = round(F.loc[i, 'FLOW_POS'], 2)
@@ -409,6 +441,8 @@ def IDFC_TW_MIS_TASK(A1,B1):
         F.loc[i, 'RT_POS'] = round(F.loc[i, 'RT_POS'], 2)
         F.loc[i, 'TOTAL PAID'] = round(F.loc[i, 'TOTAL PAID'], 2)
 
+    progress_recorder.set_progress(current=5, total=7)
+
     print(F)
     F.to_excel('media/IDFC_TW/MIS/MAR 22/Performance_IDFC_TW.xlsx', index=False)
     F.to_excel('media/IDFC_TW/Billing/MAR 22/Performance_IDFC_TW.xlsx', index=False)
@@ -419,6 +453,8 @@ def IDFC_TW_MIS_TASK(A1,B1):
     F.replace(np.nan, 0, inplace=True)
 
     F.to_excel(r'media/IDFC_TW/Billing/MAR 22/Performance_IDFC_TW.xlsx', index=False)
+
+    progress_recorder.set_progress(current=6, total=7)
 
     for i in range(0, len(A['AGREEMENTID'])):
         s = 0
@@ -447,3 +483,5 @@ def IDFC_TW_MIS_TASK(A1,B1):
     A.to_excel(r'media/IDFC_TW/TC Performance/MAR 22/MASTER FILE IDFC_TW.xlsx', index=False)
     A.to_excel(r'media/IDFC_TW/FOS Salary/MAR 22/MASTER FILE IDFC_TW.xlsx', index=False)
     A.to_excel(r'media/IDFC_TW/TC Incentive/MAR 22/MASTER FILE IDFC_TW.xlsx', index=False)
+
+    progress_recorder.set_progress(current=7, total=7)
